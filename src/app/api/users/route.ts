@@ -18,7 +18,7 @@ export async function GET(req: NextRequest) {
       return queries
     }
 
-    const queryAllowed = ['id', 'nisn', 'token', 'Role']
+    const queryAllowed = ['id', 'nisn', 'token', 'role']
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const wheres = useQuery(queryAllowed)
     const populate = req.nextUrl.searchParams.get('populate[vote]')
@@ -57,7 +57,7 @@ export async function GET(req: NextRequest) {
 
 export async function PUT(req: NextRequest) {
   try {
-    const Role: any = req.nextUrl.searchParams.get('Role')
+    const role: any = req.nextUrl.searchParams.get('role')
 
     const {
       token,
@@ -69,7 +69,7 @@ export async function PUT(req: NextRequest) {
 
     const users = await prisma.user.updateMany({
       where: {
-        Role: Role,
+        role: role,
       },
       data: {
         token,
