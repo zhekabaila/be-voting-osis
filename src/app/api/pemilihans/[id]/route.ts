@@ -8,26 +8,27 @@ export async function GET(
   { params }: { params: { id: string } }
 ) {
   try {
-    const populate = req.nextUrl.searchParams.get('populate[vote]')
+    const populate =
+      req.nextUrl.searchParams.get('populate[kandidat]') === 'true'
+        ? true
+        : false
 
-    const oneUser = await prisma.user.findUnique({
+    const pemilihan = await prisma.pemilihan.findUnique({
       where: {
         id: params.id,
       },
       include: {
-        vote: populate === 'true' ? true : false,
+        kandidat: populate,
       },
     })
 
     return NextResponse.json({
-      data: oneUser,
+      data: pemilihan,
       message: 'OK',
     })
   } catch (error) {
     return NextResponse.json(
-      {
-        error,
-      },
+      { error },
       {
         status: 500,
       }
@@ -42,36 +43,28 @@ export async function PUT(
   { params }: { params: { id: string } }
 ) {
   try {
-    const {
-      nisn,
-      password,
-      token,
-    }: {
-      nisn?: string
-      password?: string
-      token?: boolean
+    const reqBody: {
+      judul: string
+      organisasi: 'OSIS' | 'MPK'
+      kedaluwarsa: Date
     } = await req.json()
 
-    const updatedOneUser = await prisma.user.update({
+    const updatedPemilihan = await prisma.pemilihan.update({
       where: {
         id: params.id,
       },
       data: {
-        nisn,
-        password,
-        token,
+        ...reqBody,
       },
     })
 
     return NextResponse.json({
-      data: updatedOneUser,
+      data: updatedPemilihan,
       message: 'OK',
     })
   } catch (error) {
     return NextResponse.json(
-      {
-        error,
-      },
+      { error },
       {
         status: 500,
       }
@@ -86,21 +79,19 @@ export async function DELETE(
   { params }: { params: { id: string } }
 ) {
   try {
-    const deletedOneUser = await prisma.user.delete({
+    const deletedPemilihan = await prisma.pemilihan.delete({
       where: {
         id: params.id,
       },
     })
 
     return NextResponse.json({
-      data: deletedOneUser,
+      data: deletedPemilihan,
       message: 'OK',
     })
   } catch (error) {
     return NextResponse.json(
-      {
-        error,
-      },
+      { error },
       {
         status: 500,
       }

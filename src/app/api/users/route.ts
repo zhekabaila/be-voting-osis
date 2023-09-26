@@ -24,7 +24,7 @@ export async function GET(req: NextRequest) {
     const populate = req.nextUrl.searchParams.get('populate[vote]')
 
     const users = await prisma.user.findMany({
-      where: {
+      where: {  
         ...wheres,
       },
       include: {
