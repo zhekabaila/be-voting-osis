@@ -43,19 +43,21 @@ export async function PUT(
   { params }: { params: { id: string } }
 ) {
   try {
-    const reqBody: {
-      judul: string
-      organisasi: 'OSIS' | 'MPK'
-      kedaluwarsa: Date
+    const {
+      data,
+    }: {
+      data: {
+        judul?: string
+        organisasi?: 'OSIS' | 'MPK'
+        kedaluwarsa?: Date
+      }
     } = await req.json()
 
     const updatedPemilihan = await prisma.pemilihan.update({
       where: {
         id: params.id,
       },
-      data: {
-        ...reqBody,
-      },
+      data,
     })
 
     return NextResponse.json({

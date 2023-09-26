@@ -88,3 +88,81 @@ export async function GET(req: NextRequest) {
     await prisma.$disconnect()
   }
 }
+
+interface KandidatPostType {
+  no_urut: number
+  nama: string
+  kelas: string
+  jurusan: string
+  foto: string
+  moto: string
+  visi: string
+  misi: string
+  pemilihanId: string
+}
+
+export async function POST(req: NextRequest) {
+  try {
+    const { data }: { data: KandidatPostType[] } = await req.json()
+
+    const kandidats = await prisma.kandidat.createMany({
+      data,
+    })
+
+    return NextResponse.json(
+      {
+        data: kandidats,
+        message: 'OK',
+      },
+      {
+        status: 200,
+      }
+    )
+  } catch (error) {
+    return NextResponse.json(
+      {
+        error,
+      },
+      {
+        status: 500,
+      }
+    )
+  } finally {
+    await prisma.$disconnect()
+  }
+}
+
+export async function DELETE(req: NextRequest) {
+  try {
+    const { id }: { id: string[] } = await req.json()
+
+    const deletedKandidats = await prisma.kandidat.deleteMany({
+      where: {
+        id: {
+          in: id,
+        },
+      },
+    })
+
+    return NextResponse.json(
+      {
+        data: deletedKandidats,
+        message: 'OK',
+      },
+      {
+        status: 200,
+      }
+    )
+  } catch (error) {
+    return NextResponse.json(
+      {
+        error,
+      },
+      {
+        status: 500,
+      }
+    )
+  } finally {
+    await prisma.$disconnect()
+  }
+}
