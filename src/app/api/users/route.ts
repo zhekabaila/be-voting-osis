@@ -19,12 +19,11 @@ export async function GET(req: NextRequest) {
     }
 
     const queryAllowed = ['id', 'nisn', 'token', 'role']
-    // eslint-disable-next-line react-hooks/rules-of-hooks
     const wheres = useQuery(queryAllowed)
     const populate = req.nextUrl.searchParams.get('populate[vote]')
 
     const users = await prisma.user.findMany({
-      where: {  
+      where: {
         ...wheres,
       },
       include: {
@@ -57,23 +56,15 @@ export async function GET(req: NextRequest) {
 
 export async function PUT(req: NextRequest) {
   try {
-    const role: any = req.nextUrl.searchParams.get('role')
+    const role: any = req.nextUrl.searchParams.get('role') ?? undefined
 
-    const {
-      token,
-    }: {
-      nisn?: string
-      password?: string
-      token?: boolean
-    } = await req.json()
+    const reqBody = await req.json()
 
     const users = await prisma.user.updateMany({
       where: {
         role: role,
       },
-      data: {
-        token,
-      },
+      ...reqBody,
     })
 
     return NextResponse.json(

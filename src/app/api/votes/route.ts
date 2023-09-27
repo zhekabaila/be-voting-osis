@@ -18,7 +18,7 @@ export async function GET(req: NextRequest) {
       return queries
     }
 
-    const queryAllowed = ['userId', 'pemilihanId', 'kandidatId']
+    const queryAllowed = ['id', 'userId', 'pemilihanId', 'kandidatId']
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const wheres = useQuery(queryAllowed)
     const populateKandidat = req.nextUrl.searchParams.get('populate[kandidat]')
@@ -41,6 +41,37 @@ export async function GET(req: NextRequest) {
     return NextResponse.json(
       {
         data: votes,
+        message: 'OK',
+      },
+      {
+        status: 200,
+      }
+    )
+  } catch (error) {
+    return NextResponse.json(
+      {
+        error,
+      },
+      {
+        status: 500,
+      }
+    )
+  } finally {
+    await prisma.$disconnect()
+  }
+}
+
+export async function POST(req: NextRequest) {
+  try {
+    const reqBody = await req.json()
+
+    const result = await prisma.vote.create({
+      ...reqBody,
+    })
+
+    return NextResponse.json(
+      {
+        data: result,
         message: 'OK',
       },
       {

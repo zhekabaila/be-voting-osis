@@ -32,7 +32,6 @@ export async function GET(req: NextRequest) {
 
     const queryAllowed = {
       general: [
-        'no_urut',
         'nama',
         'kelas',
         'jurusan',
@@ -41,7 +40,7 @@ export async function GET(req: NextRequest) {
         'visi',
         'misi',
       ],
-      votes: ['userId', 'pemilihanId', 'kandidatId'],
+      votes: ['userId', 'kandidatId'],
     }
 
     const wheres = useQuery(queryAllowed.general)
@@ -50,15 +49,19 @@ export async function GET(req: NextRequest) {
     const populate =
       req.nextUrl.searchParams.get('populate[votes]') === 'true' ? true : false
     const no_urut: any = req.nextUrl.searchParams.get('no_urut')
+    const pemilihanId: string | undefined =
+      req.nextUrl.searchParams.get('pemilihanId') ?? undefined
 
     const kandidats = await prisma.kandidat.findMany({
       where: {
-        ...wheres,
-        votes: {
-          some: {
-            ...searchVotes,
-          },
+        pemilihan: {
+          id: pemilihanId,
         },
+        // votes: {
+        //   every: {
+        //     ...searchVotes,
+        //   },
+        // },
         no_urut: parseInt(no_urut) ? parseInt(no_urut) : undefined,
       },
       include: {
@@ -89,35 +92,37 @@ export async function GET(req: NextRequest) {
   }
 }
 
-interface KandidatPostType {
-  no_urut: number
-  nama: string
-  kelas: string
-  jurusan: string
-  foto: string
-  moto: string
-  visi: string
-  misi: string
-  pemilihanId: string
-}
-
 export async function POST(req: NextRequest) {
   try {
-    const { data }: { data: KandidatPostType[] } = await req.json()
+    const reqBody: any = await req.json()
 
-    const kandidats = await prisma.kandidat.createMany({
-      data,
-    })
-
-    return NextResponse.json(
-      {
-        data: kandidats,
-        message: 'OK',
-      },
-      {
-        status: 200,
-      }
-    )
+    if (Array.isArray(reqBody.data)) {
+      const kandidats = await prisma.kandidat.createMany({
+        ...reqBody,
+      })
+      return NextResponse.json(
+        {
+          data: kandidats,
+          message: 'OK',
+        },
+        {
+          status: 200,
+        }
+      )
+    } else {
+      const kandidat = await prisma.kandidat.create({
+        ...reqBody,
+      })
+      return NextResponse.json(
+        {
+          data: kandidat,
+          message: 'OK',
+        },
+        {
+          status: 200,
+        }
+      )
+    }
   } catch (error) {
     return NextResponse.json(
       {
@@ -134,14 +139,10 @@ export async function POST(req: NextRequest) {
 
 export async function DELETE(req: NextRequest) {
   try {
-    const { id }: { id: string[] } = await req.json()
+    const reqBody = await req.json()
 
     const deletedKandidats = await prisma.kandidat.deleteMany({
-      where: {
-        id: {
-          in: id,
-        },
-      },
+      ...reqBody,
     })
 
     return NextResponse.json(

@@ -22,17 +22,20 @@ export async function GET(req: NextRequest) {
 
     const wheres = useQuery(queryAllowed)
 
-    const populate =
+    const populateKandidat =
       req.nextUrl.searchParams.get('populate[kandidat]') === 'true'
         ? true
         : false
+    const populateVote =
+      req.nextUrl.searchParams.get('populate[vote]') === 'true' ? true : false
 
     const pemilihan = await prisma.pemilihan.findMany({
       where: {
         ...wheres,
       },
       include: {
-        kandidat: populate,
+        kandidat: populateKandidat,
+        votes: populateVote,
       },
     })
     console.log(new Date())
@@ -55,34 +58,14 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
   try {
-    const reqBody: {
-      judul: string
-      organisasi: 'OSIS' | 'MPK'
-      kedaluwarsa: Date
-      kandidat: {
-        createMany: {
-          data: {
-            no_urut: number
-            nama: string
-            kelas: string
-            jurusan: string
-            foto: string
-            moto: string
-            visi: string
-            misi: string
-          }[]
-        }
-      }
-    } = await req.json()
+    const reqBody = await req.json()
 
-    const pemilihan = await prisma.pemilihan.create({
-      data: {
-        ...reqBody,
-      },
+    const createdPemilihan = await prisma.pemilihan.create({
+      ...reqBody,
     })
 
     return NextResponse.json({
-      data: pemilihan,
+      data: createdPemilihan,
       message: 'OK',
     })
   } catch (error) {
@@ -98,15 +81,11 @@ export async function POST(req: NextRequest) {
 }
 
 export async function DELETE(req: NextRequest) {
-  const { id }: { id: string[] } = await req.json()
-
   try {
+    const where = await req.json()
+
     const deletedPemilihan = await prisma.pemilihan.deleteMany({
-      where: {
-        id: {
-          in: id,
-        },
-      },
+      ...where,
     })
 
     return NextResponse.json({
