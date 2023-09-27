@@ -79,6 +79,8 @@ export async function GET(req: NextRequest) {
         status: 500,
         headers: {
           'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'GET, POST, DELETE',
+          'Access-Control-Allow-Headers': '*',
         },
       }
     )
@@ -102,6 +104,11 @@ export async function POST(req: NextRequest) {
         },
         {
           status: 200,
+          headers: {
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'GET, POST, DELETE',
+            'Access-Control-Allow-Headers': '*',
+          },
         }
       )
     } else {
@@ -115,6 +122,11 @@ export async function POST(req: NextRequest) {
         },
         {
           status: 200,
+          headers: {
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'GET, POST, DELETE',
+            'Access-Control-Allow-Headers': '*',
+          },
         }
       )
     }
@@ -125,6 +137,11 @@ export async function POST(req: NextRequest) {
       },
       {
         status: 500,
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'GET, POST, DELETE',
+          'Access-Control-Allow-Headers': '*',
+        },
       }
     )
   } finally {
@@ -147,6 +164,11 @@ export async function DELETE(req: NextRequest) {
       },
       {
         status: 200,
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'GET, POST, DELETE',
+          'Access-Control-Allow-Headers': '*',
+        },
       }
     )
   } catch (error) {
@@ -156,6 +178,11 @@ export async function DELETE(req: NextRequest) {
       },
       {
         status: 500,
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'GET, POST, DELETE',
+          'Access-Control-Allow-Headers': '*',
+        },
       }
     )
   } finally {

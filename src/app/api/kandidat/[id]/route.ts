@@ -27,6 +27,11 @@ export async function GET(
       },
       {
         status: 200,
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'GET, POST, DELETE',
+          'Access-Control-Allow-Headers': '*',
+        },
       }
     )
   } catch (error) {
@@ -36,6 +41,11 @@ export async function GET(
       },
       {
         status: 500,
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'GET, POST, DELETE',
+          'Access-Control-Allow-Headers': '*',
+        },
       }
     )
   } finally {
@@ -81,6 +91,11 @@ export async function PUT(
       },
       {
         status: 200,
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'GET, POST, DELETE',
+          'Access-Control-Allow-Headers': '*',
+        },
       }
     )
   } catch (error) {
@@ -115,6 +130,11 @@ export async function DELETE(
       },
       {
         status: 200,
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'GET, POST, DELETE',
+          'Access-Control-Allow-Headers': '*',
+        },
       }
     )
   } catch (error) {
@@ -124,6 +144,11 @@ export async function DELETE(
       },
       {
         status: 500,
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'GET, POST, DELETE',
+          'Access-Control-Allow-Headers': '*',
+        },
       }
     )
   } finally {
