@@ -31,15 +31,7 @@ export async function GET(req: NextRequest) {
     }
 
     const queryAllowed = {
-      general: [
-        'nama',
-        'kelas',
-        'jurusan',
-        'foto',
-        'moto',
-        'visi',
-        'misi',
-      ],
+      general: ['nama', 'kelas', 'jurusan', 'foto', 'moto', 'visi', 'misi'],
       votes: ['userId', 'kandidatId'],
     }
 
@@ -85,6 +77,9 @@ export async function GET(req: NextRequest) {
       },
       {
         status: 500,
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+        },
       }
     )
   } finally {
