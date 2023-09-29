@@ -68,6 +68,11 @@ export async function GET(req: NextRequest) {
       },
       {
         status: 200,
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'GET, POST, DELETE',
+          'Access-Control-Allow-Headers': '*',
+        },
       }
     )
   } catch (error) {

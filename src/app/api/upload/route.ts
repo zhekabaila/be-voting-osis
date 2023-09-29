@@ -1,34 +1,45 @@
-import { NextRequest, NextResponse } from 'next/server'
 import { v2 as cloudinary } from 'cloudinary'
+import '@/utils/cloudinary'
+import { NextRequest, NextResponse } from 'next/server'
 
-cloudinary.config({
-  cloud_name: 'dctqloe37',
-  api_key: '622392768888815',
-  api_secret: 'dVJqrG9WOsXq0MSlh2iPEbtY8aI',
-})
+export async function POST(req: NextRequest) {
+  const { image, organization } = await req.json()
 
-export async function GET(req: any) {
-  try {
-    const uploadImage = await cloudinary.uploader.upload(
-      'https://images.unsplash.com/photo-1682686580036-b5e25932ce9a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1975&q=80',
-      { public_id: 'mountain_image_1' },
-      (error, result) => {
-        if (error) {
-          console.log(error)
-          return error
-        }
-        return result
+  //   console.log(...file)
+
+  if (!image || !organization) {
+    return NextResponse.json(
+      {
+        message: 'Image or organization is undefined',
+      },
+      {
+        status: 200,
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'GET',
+          'Access-Control-Allow-Headers': '*',
+        },
       }
     )
+  }
 
-    return new NextResponse('ss', {
+  const result = await cloudinary.uploader.upload(
+    image,
+    { folder: organization },
+    function (error, result) {
+      if (error) return error
+      return result
+    }
+  )
+  return NextResponse.json(
+    { data: result },
+    {
+      status: 200,
       headers: {
         'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'GET',
+        'Access-Control-Allow-Headers': '*',
       },
-    })
-  } catch (error) {
-    return NextResponse.json({
-      error,
-    })
-  }
+    }
+  )
 }
