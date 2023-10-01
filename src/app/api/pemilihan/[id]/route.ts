@@ -22,15 +22,35 @@ export async function GET(
       },
     })
 
-    return NextResponse.json({
-      data: pemilihan,
-      message: 'OK',
-    })
+    return NextResponse.json(
+      {
+        code: 200,
+        data: pemilihan,
+        message: pemilihan
+          ? 'successfully get pemilihan data'
+          : 'pemilihan data is not available',
+        status: 'success',
+      },
+      {
+        status: 200,
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+        },
+      }
+    )
   } catch (error) {
     return NextResponse.json(
-      { error },
       {
-        status: 500,
+        code: 400,
+        error,
+        message: 'not found',
+        status: 'error',
+      },
+      {
+        status: 400,
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+        },
       }
     )
   } finally {
@@ -52,15 +72,33 @@ export async function PUT(
       ...reqBody,
     })
 
-    return NextResponse.json({
-      data: updatedPemilihan,
-      message: 'OK',
-    })
+    return NextResponse.json(
+      {
+        code: 200,
+        data: updatedPemilihan,
+        message: `successfully updated pemilihan data with id: ${params.id}`,
+        status: 'success',
+      },
+      {
+        status: 200,
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+        },
+      }
+    )
   } catch (error) {
     return NextResponse.json(
-      { error },
       {
-        status: 500,
+        error,
+        code: 400,
+        message: `not found`,
+        status: 'error',
+      },
+      {
+        status: 400,
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+        },
       }
     )
   } finally {
@@ -79,15 +117,33 @@ export async function DELETE(
       },
     })
 
-    return NextResponse.json({
-      data: deletedPemilihan,
-      message: 'OK',
-    })
+    return NextResponse.json(
+      {
+        code: 200,
+        data: deletedPemilihan,
+        message: `successfully deleted pemilihan data with id: ${params.id}`,
+        status: 'success',
+      },
+      {
+        status: 200,
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+        },
+      }
+    )
   } catch (error) {
     return NextResponse.json(
-      { error },
       {
-        status: 500,
+        code: 400,
+        error,
+        message: `not found`,
+        status: 'error',
+      },
+      {
+        status: 400,
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+        },
       }
     )
   } finally {

@@ -22,15 +22,17 @@ export async function GET(
 
     return NextResponse.json(
       {
+        code: 200,
         data: kandidat,
-        message: 'OK',
+        message: kandidat
+          ? `Successfully get data with id: ${params.id}`
+          : `kandidat with id: ${params.id} not found`,
+        status: 'success',
       },
       {
         status: 200,
         headers: {
           'Access-Control-Allow-Origin': '*',
-          'Access-Control-Allow-Methods': 'GET, POST, DELETE',
-          'Access-Control-Allow-Headers': '*',
         },
       }
     )
@@ -38,13 +40,14 @@ export async function GET(
     return NextResponse.json(
       {
         error,
+        code: 400,
+        message: 'Bad Request',
+        status: 'success',
       },
       {
-        status: 500,
+        status: 400,
         headers: {
           'Access-Control-Allow-Origin': '*',
-          'Access-Control-Allow-Methods': 'GET, POST, DELETE',
-          'Access-Control-Allow-Headers': '*',
         },
       }
     )
@@ -86,25 +89,33 @@ export async function PUT(
 
     return NextResponse.json(
       {
+        code: 200,
         data: kandidat,
-        message: 'OK',
+        message: kandidat
+          ? `Kandidat with id: ${params.id} successfully updated`
+          : `Kandidat with id: ${params.id} not found`,
+        status: 'success',
       },
       {
         status: 200,
         headers: {
           'Access-Control-Allow-Origin': '*',
-          'Access-Control-Allow-Methods': 'GET, POST, DELETE',
-          'Access-Control-Allow-Headers': '*',
         },
       }
     )
   } catch (error) {
     return NextResponse.json(
       {
+        code: 200,
         error,
+        message: `Kandidat with id: ${params.id} not found`,
+        status: 'error',
       },
       {
         status: 500,
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+        },
       }
     )
   } finally {
@@ -125,15 +136,17 @@ export async function DELETE(
 
     return NextResponse.json(
       {
+        code: 200,
         data: deletedKandidat,
-        message: 'OK',
+        message: deletedKandidat
+          ? `Kandidat with id: ${params.id} successfully deleted`
+          : `Kandidat with id: ${params.id} not found`,
+        status: 'success',
       },
       {
         status: 200,
         headers: {
           'Access-Control-Allow-Origin': '*',
-          'Access-Control-Allow-Methods': 'GET, POST, DELETE',
-          'Access-Control-Allow-Headers': '*',
         },
       }
     )
@@ -141,13 +154,14 @@ export async function DELETE(
     return NextResponse.json(
       {
         error,
+        code: 400,
+        message: 'Bad request',
+        status: 'error',
       },
       {
-        status: 500,
+        status: 400,
         headers: {
           'Access-Control-Allow-Origin': '*',
-          'Access-Control-Allow-Methods': 'GET, POST, DELETE',
-          'Access-Control-Allow-Headers': '*',
         },
       }
     )

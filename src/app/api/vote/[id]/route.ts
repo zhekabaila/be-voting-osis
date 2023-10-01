@@ -27,20 +27,33 @@ export async function GET(
 
     return NextResponse.json(
       {
+        code: 200,
         data: votes,
-        message: 'OK',
+        message: votes
+          ? `successfully get votes data with id: ${params.id}`
+          : 'votes data is not available',
+        status: 'success',
       },
       {
         status: 200,
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+        },
       }
     )
   } catch (error) {
     return NextResponse.json(
       {
+        code: 400,
         error,
+        message: 'not found',
+        status: 'success',
       },
       {
-        status: 500,
+        status: 400,
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+        },
       }
     )
   } finally {

@@ -19,17 +19,35 @@ export async function GET(
       },
     })
 
-    return NextResponse.json({
-      data: oneUser,
-      message: 'OK',
-    })
+    return NextResponse.json(
+      {
+        code: 200,
+        data: oneUser,
+        message: oneUser
+          ? `successfully get user data with id: ${params.id}`
+          : 'user data is not available',
+        status: 'success',
+      },
+      {
+        status: 200,
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+        },
+      }
+    )
   } catch (error) {
     return NextResponse.json(
       {
+        code: 400,
         error,
+        message: 'not found',
+        status: 'error',
       },
       {
-        status: 500,
+        status: 400,
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+        },
       }
     )
   } finally {
@@ -63,17 +81,33 @@ export async function PUT(
       },
     })
 
-    return NextResponse.json({
-      data: updatedOneUser,
-      message: 'OK',
-    })
+    return NextResponse.json(
+      {
+        code: 200,
+        data: updatedOneUser,
+        message: `successfully updated user with id: ${params.id}`,
+        status: 'success',
+      },
+      {
+        status: 200,
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+        },
+      }
+    )
   } catch (error) {
     return NextResponse.json(
       {
+        code: 400,
         error,
+        message: `not found`,
+        status: 'error',
       },
       {
-        status: 500,
+        status: 400,
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+        },
       }
     )
   } finally {
@@ -92,17 +126,33 @@ export async function DELETE(
       },
     })
 
-    return NextResponse.json({
-      data: deletedOneUser,
-      message: 'OK',
-    })
+    return NextResponse.json(
+      {
+        code: 200,
+        data: deletedOneUser,
+        message: `successfully deleted user with id: ${params.id}`,
+        status: 'success',
+      },
+      {
+        status: 200,
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+        },
+      }
+    )
   } catch (error) {
     return NextResponse.json(
       {
+        code: 400,
         error,
+        message: `not found`,
+        status: 'error',
       },
       {
-        status: 500,
+        status: 400,
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+        },
       }
     )
   } finally {

@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { PrismaClient } from '@prisma/client'
+import { v2 as cloudinary } from 'cloudinary'
+import '@/utils/cloudinary'
 
 const prisma = new PrismaClient()
 
@@ -49,11 +51,12 @@ export async function GET(req: NextRequest) {
         pemilihan: {
           id: pemilihanId,
         },
-        // votes: {
-        //   every: {
-        //     ...searchVotes,
-        //   },
-        // },
+        votes: {
+          every: {
+            ...searchVotes,
+          },
+        },
+        ...wheres,
         no_urut: parseInt(no_urut) ? parseInt(no_urut) : undefined,
       },
       include: {
@@ -63,29 +66,33 @@ export async function GET(req: NextRequest) {
 
     return NextResponse.json(
       {
+        code: 200,
         data: kandidats,
-        message: 'OK',
+        message:
+          kandidats.length > 0
+            ? 'successfully get kandidat data'
+            : 'kandidat data not available',
+        status: 'success',
       },
       {
         status: 200,
         headers: {
           'Access-Control-Allow-Origin': '*',
-          'Access-Control-Allow-Methods': 'GET, POST, DELETE',
-          'Access-Control-Allow-Headers': '*',
         },
       }
     )
   } catch (error) {
     return NextResponse.json(
       {
+        code: 400,
         error,
+        message: 'Not Found',
+        status: 'error',
       },
       {
-        status: 500,
+        status: 400,
         headers: {
           'Access-Control-Allow-Origin': '*',
-          'Access-Control-Allow-Methods': 'GET, POST, DELETE',
-          'Access-Control-Allow-Headers': '*',
         },
       }
     )
@@ -96,56 +103,52 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
   try {
-    const reqBody: any = await req.json()
+    let { data } = await req.json()
 
-    if (Array.isArray(reqBody.data)) {
-      const kandidats = await prisma.kandidat.createMany({
-        ...reqBody,
-      })
-      return NextResponse.json(
-        {
-          data: kandidats,
-          message: 'OK',
+    const result = await cloudinary.uploader.upload(
+      data.foto,
+      {
+        folder: data.organisasi ?? undefined,
+      },
+      (error, result) => {
+        if (error) return error
+        return result
+      }
+    )
+
+    data.foto = result.secure_url
+
+    const kandidat = await prisma.kandidat.create({
+      data,
+    })
+    return NextResponse.json(
+      {
+        code: 201,
+        data: kandidat,
+        message: kandidat
+          ? 'successfully created new kandidat data'
+          : 'failed to create kandidat data',
+        status: 'success',
+      },
+      {
+        status: 201,
+        headers: {
+          'Access-Control-Allow-Origin': '*',
         },
-        {
-          status: 200,
-          headers: {
-            'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Methods': 'GET, POST, DELETE',
-            'Access-Control-Allow-Headers': '*',
-          },
-        }
-      )
-    } else {
-      const kandidat = await prisma.kandidat.create({
-        ...reqBody,
-      })
-      return NextResponse.json(
-        {
-          data: kandidat,
-          message: 'OK',
-        },
-        {
-          status: 200,
-          headers: {
-            'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Methods': 'GET, POST, DELETE',
-            'Access-Control-Allow-Headers': '*',
-          },
-        }
-      )
-    }
+      }
+    )
   } catch (error) {
     return NextResponse.json(
       {
+        code: 400,
         error,
+        message: 'not found',
+        status: 'error',
       },
       {
-        status: 500,
+        status: 400,
         headers: {
           'Access-Control-Allow-Origin': '*',
-          'Access-Control-Allow-Methods': 'GET, POST, DELETE',
-          'Access-Control-Allow-Headers': '*',
         },
       }
     )
@@ -164,29 +167,30 @@ export async function DELETE(req: NextRequest) {
 
     return NextResponse.json(
       {
+        code: 200,
         data: deletedKandidats,
-        message: 'OK',
+        message: 'successfully deleted kandidat data',
+        status: 'success',
       },
       {
         status: 200,
         headers: {
           'Access-Control-Allow-Origin': '*',
-          'Access-Control-Allow-Methods': 'GET, POST, DELETE',
-          'Access-Control-Allow-Headers': '*',
         },
       }
     )
   } catch (error) {
     return NextResponse.json(
       {
+        code: 400,
         error,
+        message: 'not found',
+        status: 'error',
       },
       {
-        status: 500,
+        status: 400,
         headers: {
           'Access-Control-Allow-Origin': '*',
-          'Access-Control-Allow-Methods': 'GET, POST, DELETE',
-          'Access-Control-Allow-Headers': '*',
         },
       }
     )

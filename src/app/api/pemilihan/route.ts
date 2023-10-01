@@ -38,17 +38,36 @@ export async function GET(req: NextRequest) {
         votes: populateVote,
       },
     })
-    console.log(new Date())
 
-    return NextResponse.json({
-      data: pemilihan,
-      message: 'OK',
-    })
+    return NextResponse.json(
+      {
+        data: pemilihan,
+        code: 200,
+        message: pemilihan
+          ? 'successfully get pemilihan data'
+          : 'pemilihan data is not available',
+        status: 'success',
+      },
+      {
+        status: 200,
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+        },
+      }
+    )
   } catch (error) {
     return NextResponse.json(
-      { error },
       {
-        status: 500,
+        code: 400,
+        error,
+        message: 'not found',
+        status: 'error',
+      },
+      {
+        status: 400,
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+        },
       }
     )
   } finally {
@@ -64,15 +83,33 @@ export async function POST(req: NextRequest) {
       ...reqBody,
     })
 
-    return NextResponse.json({
-      data: createdPemilihan,
-      message: 'OK',
-    })
+    return NextResponse.json(
+      {
+        code: 201,
+        data: createdPemilihan,
+        message: 'successfully created new pemilihan data',
+        status: 'seccess',
+      },
+      {
+        status: 201,
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+        },
+      }
+    )
   } catch (error) {
     return NextResponse.json(
-      { error },
       {
-        status: 500,
+        code: 400,
+        error,
+        message: 'not found',
+        status: 'error',
+      },
+      {
+        status: 400,
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+        },
       }
     )
   } finally {
@@ -88,15 +125,33 @@ export async function DELETE(req: NextRequest) {
       ...where,
     })
 
-    return NextResponse.json({
-      data: deletedPemilihan,
-      message: 'OK',
-    })
+    return NextResponse.json(
+      {
+        code: 200,
+        data: deletedPemilihan,
+        message: 'successfully deleted pemilihan data',
+        status: 'success',
+      },
+      {
+        status: 200,
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+        },
+      }
+    )
   } catch (error) {
     return NextResponse.json(
-      { error },
       {
-        status: 500,
+        code: 400,
+        error,
+        message: 'not found',
+        status: 'error',
+      },
+      {
+        status: 400,
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+        },
       }
     )
   } finally {

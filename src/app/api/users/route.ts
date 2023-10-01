@@ -33,20 +33,34 @@ export async function GET(req: NextRequest) {
 
     return NextResponse.json(
       {
+        code: 200,
         data: users,
-        message: 'OK',
+        message:
+          users.length > 0
+            ? `successfully get users data`
+            : 'user data is not available',
+        status: 'success',
       },
       {
         status: 200,
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+        },
       }
     )
   } catch (error) {
     return NextResponse.json(
       {
+        code: 400,
         error,
+        message: 'not found',
+        status: 'error',
       },
       {
-        status: 500,
+        status: 400,
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+        },
       }
     )
   } finally {
@@ -69,20 +83,31 @@ export async function PUT(req: NextRequest) {
 
     return NextResponse.json(
       {
+        code: 200,
         data: users,
-        message: 'OK',
+        message: 'successfully updated users data',
+        status: 'success',
       },
       {
         status: 200,
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+        },
       }
     )
   } catch (error) {
     return NextResponse.json(
       {
+        code: 400,
         error,
+        message: 'not found',
+        status: 'error',
       },
       {
-        status: 500,
+        status: 400,
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+        },
       }
     )
   } finally {

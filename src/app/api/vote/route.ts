@@ -40,20 +40,34 @@ export async function GET(req: NextRequest) {
 
     return NextResponse.json(
       {
+        code: 200,
         data: votes,
-        message: 'OK',
+        message:
+          votes.length > 0
+            ? 'successfully get votes data'
+            : 'votes data id not available',
+        status: 'success',
       },
       {
         status: 200,
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+        },
       }
     )
   } catch (error) {
     return NextResponse.json(
       {
+        code: 400,
         error,
+        message: 'not found',
+        status: 'error',
       },
       {
-        status: 500,
+        status: 400,
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+        },
       }
     )
   } finally {
@@ -71,20 +85,31 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json(
       {
+        code: 200,
         data: result,
-        message: 'OK',
+        message: 'successfully created new votes data',
+        status: 'success',
       },
       {
         status: 200,
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+        },
       }
     )
   } catch (error) {
     return NextResponse.json(
       {
+        code: 400,
         error,
+        message: 'not found',
+        status: 'error',
       },
       {
-        status: 500,
+        status: 400,
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+        },
       }
     )
   } finally {

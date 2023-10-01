@@ -2,43 +2,27 @@ import { v2 as cloudinary } from 'cloudinary'
 import '@/utils/cloudinary'
 import { NextRequest, NextResponse } from 'next/server'
 
-export async function POST(req: NextRequest) {
-  const { image, organization } = await req.json()
+export async function GET(req: NextRequest) {
+  // const { image, organization } = await req.json()
 
-  //   console.log(...file)
-
-  if (!image || !organization) {
-    return NextResponse.json(
-      {
-        message: 'Image or organization is undefined',
-      },
-      {
-        status: 200,
-        headers: {
-          'Access-Control-Allow-Origin': '*',
-          'Access-Control-Allow-Methods': 'GET',
-          'Access-Control-Allow-Headers': '*',
-        },
-      }
-    )
-  }
-
-  const result = await cloudinary.uploader.upload(
-    image,
-    { folder: organization },
-    function (error, result) {
-      if (error) return error
-      return result
+  const { resources } = await cloudinary.api.resource(
+    '',
+    {
+      // resource_type: 'image',
+      all: true,
+    },
+    (err, result) => {
+      console.log(err)
+      console.log(result)
     }
   )
+
   return NextResponse.json(
-    { data: result },
+    { data: resources },
     {
       status: 200,
       headers: {
         'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Methods': 'GET',
-        'Access-Control-Allow-Headers': '*',
       },
     }
   )
