@@ -32,6 +32,8 @@ export async function GET(
         status: 200,
         headers: {
           'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'GET, PUT, DELETE',
+          'Access-Control-Allow-Headers': '*',
         },
       }
     )
@@ -47,6 +49,8 @@ export async function GET(
         status: 400,
         headers: {
           'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'GET, PUT, DELETE',
+          'Access-Control-Allow-Headers': '*',
         },
       }
     )
@@ -92,6 +96,8 @@ export async function PUT(
         status: 200,
         headers: {
           'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'GET, PUT, DELETE',
+          'Access-Control-Allow-Headers': '*',
         },
       }
     )
@@ -107,6 +113,8 @@ export async function PUT(
         status: 400,
         headers: {
           'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'GET, PUT, DELETE',
+          'Access-Control-Allow-Headers': '*',
         },
       }
     )
@@ -137,6 +145,8 @@ export async function DELETE(
         status: 200,
         headers: {
           'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'GET, PUT, DELETE',
+          'Access-Control-Allow-Headers': '*',
         },
       }
     )
@@ -152,6 +162,8 @@ export async function DELETE(
         status: 400,
         headers: {
           'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'GET, PUT, DELETE',
+          'Access-Control-Allow-Headers': '*',
         },
       }
     )

@@ -38,6 +38,8 @@ export async function GET(
         status: 200,
         headers: {
           'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'GET',
+          'Access-Control-Allow-Headers': '*',
         },
       }
     )
@@ -53,6 +55,8 @@ export async function GET(
         status: 400,
         headers: {
           'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'GET',
+          'Access-Control-Allow-Headers': '*',
         },
       }
     )

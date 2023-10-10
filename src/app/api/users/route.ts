@@ -45,6 +45,8 @@ export async function GET(req: NextRequest) {
         status: 200,
         headers: {
           'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'GET, PUT',
+          'Access-Control-Allow-Headers': '*',
         },
       }
     )
@@ -60,6 +62,8 @@ export async function GET(req: NextRequest) {
         status: 400,
         headers: {
           'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'GET, PUT',
+          'Access-Control-Allow-Headers': '*',
         },
       }
     )
@@ -92,6 +96,8 @@ export async function PUT(req: NextRequest) {
         status: 200,
         headers: {
           'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'GET, PUT',
+          'Access-Control-Allow-Headers': '*',
         },
       }
     )
@@ -107,6 +113,8 @@ export async function PUT(req: NextRequest) {
         status: 400,
         headers: {
           'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'GET, PUT',
+          'Access-Control-Allow-Headers': '*',
         },
       }
     )
